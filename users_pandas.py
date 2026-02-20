@@ -1,4 +1,4 @@
-from supabase_client import supabase
+from sb_client import supabase
 import pandas as pd
 
 response = supabase.table("users").select("*").execute()

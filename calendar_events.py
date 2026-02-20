@@ -1,2 +1,2 @@
 # handle calendar based queries in the database
-from connection import connect_db
+from db_connection import connect_db

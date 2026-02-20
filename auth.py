@@ -1,5 +1,7 @@
 from flask import request
-from supabase_client import create_client
+from supabase import create_client
+
+supabase = create_client()
 
 def get_user_from_request():
     auth_header = request.headers.get("Authorization")

@@ -1,7 +1,7 @@
 # handle user based queries in the database
 
-from supabase_client import Client
-from supabase_client import supabase   # adjust import name if needed
+from supabase import Client
+from sb_client import supabase   # adjust import name if needed
 
 def create_user(email: str, password: str):
     response = supabase.auth.sign_up({

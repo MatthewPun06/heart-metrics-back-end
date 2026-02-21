@@ -1,22 +1,47 @@
 import os
-from flask import Flask
+from flask import Flask, request, jsonify
 from sb_client import supabase
+from users import create_user, login_user
+from flask_cors import CORS
 
 app = Flask(__name__)
 
-# define a route to display the todos from the "todos" table in Supabase
-@app.route('/')
-def index():
-    response = supabase.table('users').select("*").execute()
-    users = response.data
-    # generate basic/temporary HTML to display the users
-    # RETURN NORMAL JSON INSTEAD OF HTML LATER ON
-    html = '<h1>Users</h1><ul>'
-    for user in users:
-        html += f'<li>{user["name"]}</li>'
-    html += '</ul>'
+CORS(app, resources={
+    r"/api/*": {
+        "origins": ["http://localhost:3000"],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
-    return html
+# routes
+
+@app.route("/api/index", methods=["GET"])
+def index():   
+    try:
+        response = supabase.table('users').select("*").execute()
+        return jsonify(response.data if response.data else [])
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/signup", methods=["POST"])
+def signup():
+    data = request.json
+    result = create_user(data["name"], data["email"], data["password"])
+    print(result)
+    return jsonify(result)
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.json
+    result = login_user(data["email"], data["password"])
+    return jsonify(result)
+
+@app.route("/api/delete/<user_id>", methods=["GET"])
+def delete_user(user_id: str):
+    result = delete_user(user_id)
+    return jsonify(result)
+
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host = '0.0.0.0', port = 5001, debug=True)

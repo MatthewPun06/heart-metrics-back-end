@@ -5,5 +5,5 @@ create table "tasks" (
   
   "assignment_name" text not null,
   "description" text,
-  "due_date" date
+  "due_date" date default current_date
 );

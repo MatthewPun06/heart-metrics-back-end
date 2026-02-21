@@ -12,6 +12,6 @@ create table "teams" (
   "work_life_harmony" integer,
 
   -- information about the last survey
-  last_survey_date timestamp,
-  time_between_surveys integer -- in days
+  "last_survey_date" timestamp,
+  "time_between_surveys" integer -- in days
 );
